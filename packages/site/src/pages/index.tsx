@@ -11,7 +11,6 @@ import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
   Card,
 } from '../components';
 
@@ -129,10 +128,10 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        <Span>SafeCheck</Span>
       </Heading>
       <Subtitle>
-        Get started by editing <code>src/index.ts</code>
+        A new way to check if a transaction will drain your account
       </Subtitle>
       <CardContainer>
         {state.error && (
@@ -145,7 +144,7 @@ const Index = () => {
             content={{
               title: 'Install',
               description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
+                'Install our snap easily by clicking this button',
               button: <InstallFlaskButton />,
             }}
             fullWidth
@@ -156,7 +155,7 @@ const Index = () => {
             content={{
               title: 'Connect',
               description:
-                'Get started by connecting to and installing the example snap.',
+                'Get started by connecting to our snap.',
               button: (
                 <ConnectButton
                   onClick={handleConnectClick}
@@ -165,6 +164,7 @@ const Index = () => {
               ),
             }}
             disabled={!state.isFlask}
+            fullWidth
           />
         )}
         {shouldDisplayReconnectButton(state.installedSnap) && (
@@ -172,7 +172,7 @@ const Index = () => {
             content={{
               title: 'Reconnect',
               description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
+              'FOR TESTING PURPOSES ONLY: Reconnect to our snap.',
               button: (
                 <ReconnectButton
                   onClick={handleConnectClick}
@@ -181,9 +181,10 @@ const Index = () => {
               ),
             }}
             disabled={!state.installedSnap}
+            fullWidth
           />
         )}
-        <Card
+        {/*<Card
           content={{
             title: 'Send Hello message',
             description:
@@ -197,15 +198,15 @@ const Index = () => {
           }}
           disabled={false}
           fullWidth={false}
-        />
-        <Notice>
+        />*/}
+        {/*<Notice>
           <p>
             Please note that the <b>snap.manifest.json</b> and{' '}
             <b>package.json</b> must be located in the server root directory and
             the bundle must be hosted at the location specified by the location
             field.
           </p>
-        </Notice>
+        </Notice>*/}
       </CardContainer>
     </Container>
   );
