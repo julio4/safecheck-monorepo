@@ -11,7 +11,6 @@ import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
 } from './Buttons';
 import { Card } from './Card';
 
@@ -183,7 +182,7 @@ export const Home = () => {
             disabled={!state.installedSnap}
           />
         )}
-        <Card
+        {/*<Card
           content={{
             title: 'Send Hello message',
             description:
@@ -205,7 +204,7 @@ export const Home = () => {
             the bundle must be hosted at the location specified by the location
             field.
           </p>
-        </Notice>
+        </Notice>*/}
       </CardContainer>
     </Container>
   );

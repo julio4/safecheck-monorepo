@@ -32,6 +32,34 @@ const Link = styled.a`
   }
 `;
 
+const LinkGrad = styled.a`
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  font-size: ${(props) => props.theme.fontSizes.small};
+  border-radius: ${(props) => props.theme.radii.button};
+  border: none${(props) => props.theme.colors.background.inverse};
+  background-image: linear-gradient(to right, #FD882B 0%, #F09819  51%, #FF512F  100%);
+  color: ${(props) => props.theme.colors.text.inverse};
+  text-decoration: none;
+  font-weight: bold;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-position: right center;
+    border: none;
+    text-decoration: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.small} {
+    width: 100%;
+    box-sizing: border-box;
+  }
+`;
+
 const Button = styled.button`
   display: flex;
   align-self: flex-start;
@@ -41,6 +69,20 @@ const Button = styled.button`
   ${({ theme }) => theme.mediaQueries.small} {
     width: 100%;
   }
+`;
+
+const ButtonGrad = styled.button`
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  ${({ theme }) => theme.mediaQueries.small} {
+    width: 100%;
+  }
+
+  background-image: linear-gradient(to right, #FD882B 0%, #F09819  51%, #FF512F  100%);
+  border: none !important;          
 `;
 
 const ButtonText = styled.span`
@@ -70,32 +112,28 @@ const ConnectedIndicator = styled.div`
 `;
 
 export const InstallFlaskButton = () => (
-  <Link href="https://metamask.io/flask/" target="_blank">
+  <LinkGrad href="https://metamask.io/flask/" target="_blank">
     <FlaskFox />
-    <ButtonText>Install MetaMask Flask</ButtonText>
-  </Link>
+    <ButtonText>Install Our Flask</ButtonText>
+  </LinkGrad>
 );
 
 export const ConnectButton = (props: ComponentProps<typeof Button>) => {
   return (
-    <Button {...props}>
+    <ButtonGrad {...props}>
       <FlaskFox />
       <ButtonText>Connect</ButtonText>
-    </Button>
+    </ButtonGrad>
   );
 };
 
 export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
   return (
-    <Button {...props}>
+    <ButtonGrad {...props}>
       <FlaskFox />
       <ButtonText>Reconnect</ButtonText>
-    </Button>
+    </ButtonGrad>
   );
-};
-
-export const SendHelloButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Send message</Button>;
 };
 
 export const HeaderButtons = ({
