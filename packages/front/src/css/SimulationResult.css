@@ -1,0 +1,9 @@
+.simulationDataGrid>* {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.apexcharts-canvas{
+    background-color: white;
+}

@@ -1,19 +1,12 @@
-import { InputGroup, InputLeftElement, Input, Container } from '@chakra-ui/react'
+import { Box, InputGroup, InputLeftElement, Input, Container, Button, Stack } from '@chakra-ui/react'
 import { ArrowRightIcon } from '@chakra-ui/icons'
+import { Link, Outlet } from 'react-router-dom';
 
 import '../css/Insights.css'
 
 const Insights = (props) => {
   return (
     <>
-      <h1>Insights</h1>
-      <p>
-        Should have:
-        <ul>
-          <li>Form for transaction</li>
-          <li>Snap install</li>
-        </ul>
-      </p>
       <Container className='formContainer' maxW='md'>
         <InputGroup>
           <InputLeftElement
@@ -22,7 +15,7 @@ const Insights = (props) => {
             fontSize='1.2em'
           // children={<LinkIcon color='green.500' />}
           />
-          <Input placeholder='To' />
+          <Input placeholder='To' bg={'gray.100'} focusBorderColor={'pink.200'} />
         </InputGroup>
         <InputGroup>
           <InputLeftElement
@@ -31,7 +24,7 @@ const Insights = (props) => {
             fontSize='1.2em'
           // children={<LinkIcon color='green.500' />}
           />
-          <Input placeholder='From' />
+          <Input placeholder='From' bg={'gray.100'} focusBorderColor={'pink.200'} />
         </InputGroup>
         <InputGroup>
           <InputLeftElement
@@ -40,11 +33,21 @@ const Insights = (props) => {
             fontSize='1.2em'
           // children={<LinkIcon color='green.500' />}
           />
-          <Input placeholder='Input data' />
+          <Input placeholder='Input data' bg={'gray.100'} focusBorderColor={'pink.200'} />
         </InputGroup>
-        <Button rightIcon={<ArrowRightIcon />} colorScheme='blue' variant='outline'>
-          Submit
-        </Button>
+        <Link to='/simulationResult'>
+          <Button leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
+            mt={8}
+            w={'full'}
+            bgGradient="linear(to-r, red.400,pink.400)"
+            color={'white'}
+            _hover={{
+              bgGradient: 'linear(to-r, red.400,pink.400)',
+              boxShadow: 'xl',
+            }}>
+            Submit
+          </Button>
+        </Link>
       </Container>
     </>
   )

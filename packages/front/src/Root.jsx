@@ -1,5 +1,6 @@
 import Header from './components/Header';
 import Insights from './pages/Insights';
+import SimulationResult from './pages/SimulationResult';
 import Contracts from './pages/Contracts';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
@@ -19,6 +20,7 @@ const Root = () => {
             <Route index element={<Home />} />
             <Route path='contracts/:address' element={<Contracts />} />
             <Route path='insights' element={<Insights />} />
+            <Route path='SimulationResult' element={<SimulationResult />} />
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>
