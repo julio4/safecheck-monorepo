@@ -13,6 +13,7 @@ import {
   ReconnectButton,
   Card,
 } from '../components';
+import { SearchBar } from '../components/SearchBar';
 
 const Container = styled.div`
   display: flex;
@@ -98,7 +99,7 @@ const ErrorMessage = styled.div`
   }
 `;
 
-const Index = () => {
+export const Index = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const handleConnectClick = async () => {
@@ -133,6 +134,9 @@ const Index = () => {
       <Subtitle>
         A new way to check if a transaction will drain your account
       </Subtitle>
+      <SearchBar>
+
+      </SearchBar>
       <CardContainer>
         {state.error && (
           <ErrorMessage>
