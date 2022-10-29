@@ -1,9 +1,40 @@
 import { useParams } from "react-router-dom";
+import { Input, Button, ButtonGroup, Grid, GridItem } from '@chakra-ui/react'
+import { Heading, Center } from '@chakra-ui/react'
 
 const Contracts = (props) => {
   const a = useParams();
   return (
     <>
+      <Grid
+      templateAreas={`"header header"
+                      "main main"
+                      "footer footer"`}
+      gridTemplateRows={'50px 1fr 30px'}
+      gridTemplateColumns={'150px 1fr'}
+      h='200px'
+      gap='1'
+      color='blackAlpha.700'
+      fontWeight='bold'
+      >
+      <GridItem pl='2' area={'header'}>
+        <Center>
+          <Heading as='h1' color='orange' size='3xl' margin="1rem auto auto auto">
+            SafeCheck
+          </Heading>
+          <Heading as='h1' color='orange' size='3xl' margin="1rem auto auto auto">
+            SafeCheck
+          </Heading>
+        </Center>
+      </GridItem>
+      <GridItem pl='2'  area={'main'}>
+        Main
+      </GridItem>
+      <GridItem pl='2' bg='blue.300' area={'footer'}>
+        Footer
+      </GridItem>
+      </Grid>
+      <Input placeholder='large size' size='lg' />
       <h1>Contracts</h1>
       <span>ADRESS: {a.address}</span>
       <p>
