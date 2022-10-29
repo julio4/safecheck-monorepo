@@ -1,8 +1,6 @@
 import { OnTransactionHandler } from "./types"
+import { getInsights } from "./insights"
 
 export const onTransaction: OnTransactionHandler = async ({ transaction, chainId }) => {
-  const insights = {
-    "State": "WIP"
-  }
-  return { insights } 
+  return await getInsights(transaction)
 };
