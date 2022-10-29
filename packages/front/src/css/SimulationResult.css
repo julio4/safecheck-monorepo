@@ -7,3 +7,10 @@
 .apexcharts-canvas{
     background-color: white;
 }
+
+.balanceDiff{
+    text-align: center;
+    margin: auto;
+    vertical-align: middle;
+    justify-content: center;
+}

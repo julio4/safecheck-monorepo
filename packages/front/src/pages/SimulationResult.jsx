@@ -18,18 +18,28 @@ import {
     Link,
     useColorMode,
     useColorModeValue,
+    Badge,
+    Stack,
+    Divider,
+    TableCaption,
+    Tfoot,
+    TableContainer,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+    GridItem
 } from "@chakra-ui/react";
 
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+
 import {
-    CartIcon,
-    DocumentIcon,
-    GlobeIcon,
     WalletIcon,
 } from "../components/Icons";
 
 import Card from "../components/Card";
 import IconBox from "../components/IconBox";
-import BarChart from "../components/BarChart";
 import LineChart from "../components/LineChart";
 
 import '../css/SimulationResult.css';
@@ -115,18 +125,10 @@ const lineChartOptions = {
 };
 
 const SimulationResult = () => {
-    const iconBlue = useColorModeValue("blue.500", "blue.500");
     const iconBoxInside = useColorModeValue("white", "white");
-    const textColor = useColorModeValue("gray.700", "white");
-    const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    const textTableColor = useColorModeValue("gray.500", "white");
-
-    const { colorMode } = useColorMode();
-
 
     return <Flex flexDirection='column' backgroundColor={'gray.50'} pt={{ base: "120px", md: "75px" }}>
-        <SimpleGrid padding={{ base: "0 0.5rem", md: "0 2rem" }} className="simulationDataGrid" columns={{ sm: 1, md: 1, xl: 3 }} spacing='24px' mb='20px'>
+        <SimpleGrid padding={{ base: "0 0.5rem", md: "0 2rem" }} className="simulationDataGrid" columns={{ sm: 1, md: 1, xl: 3 }} mb='20px' gap='20px'>
             <Card>
                 <Flex
                     flexDirection='row'
@@ -218,15 +220,12 @@ const SimulationResult = () => {
             templateRows={{ lg: "repeat(2, auto)" }}
             gap='20px'>
             <Card borderRadius='1rem'
-                bg={
-                    "white"
-                    //"linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
-                }
+                bg={"white"}
                 p='0px'
                 maxW={{ md: "100%" }}>
                 <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
-                    <Text fontSize='lg' fontWeight='bold' mb='6px'>
-                        Smart contract calls
+                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
+                        SMART CONTRACT CALL
                     </Text>
                     <Text color='#6492aa' fontSize='sm'>
                         <Text as='span' color='orange.400' fontWeight='bold'>
@@ -238,83 +237,78 @@ const SimulationResult = () => {
                 <Box minH='300px'>
                     <LineChart
                         chartData={lineChartData}
-                        chartOptions={lineChartOptions}
-                    />
+                        chartOptions={lineChartOptions} />
                 </Box>
             </Card>
-            <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
+            <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
                 <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
-                    <Text color={textColor} fontSize='lg' fontWeight='bold'>
-                        Total orders
-                    </Text>
+                    <Stack direction='row'>
+                        <Badge colorScheme='orange'>ERC20</Badge>
+                        <Badge colorScheme='orange'>ERC721</Badge>
+                    </Stack>
+                    <Accordion margin={"0.5rem 0"} defaultIndex={[0, 1]} allowMultiple>
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex='1' textAlign='left'>
+                                        Token data
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <TableContainer>
+                                    <Table variant='simple'>
+                                        <Thead>
+                                            <Tr>
+                                                <Th>Name</Th>
+                                                <Th>Symbol</Th>
+                                                <Th isNumeric>Decimals</Th>
+                                            </Tr>
+                                        </Thead>
+                                        <Tbody>
+                                            <Tr>
+                                                <Td>Wrapped Ether</Td>
+                                                <Td>WETH</Td>
+                                                <Td isNumeric>18</Td>
+                                            </Tr>
+                                        </Tbody>
+                                    </Table>
+                                </TableContainer>
+                            </AccordionPanel>
+                        </AccordionItem>
+
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex='1' textAlign='left'>
+                                        Balance diff
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <Grid templateColumns='repeat(20, 1fr)' gap={"0.2rem"}>
+                                    <GridItem colSpan={"9"} w='100%' h='10'>
+                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='red'>0.35ETH</Badge>
+                                    </GridItem>
+                                    <GridItem colSpan={"2"} w='100%' h='10'>
+                                        <ArrowForwardIcon color={"gray.400"} height={"100%"} width={"100%"} />
+                                    </GridItem>
+                                    <GridItem colSpan={"9"} w='100%' h='10'>
+                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='green'>0.05ETH</Badge>
+                                    </GridItem>
+                                </Grid>
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
+
                 </Flex>
                 <Box minH='300px'>
                     {/* <BarChart chartData={barChartData} chartOptions={barChartOptions} /> */}
-                </Box>
-            </Card>
-            <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
-                <Flex direction='column'>
-                    <Flex align='center' justify='space-between' p='22px'>
-                        <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                            Page visits
-                        </Text>
-                        <Button variant='primary' maxH='30px'>
-                            SEE ALL
-                        </Button>
-                    </Flex>
-                    <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-                        <Table>
-                            <Thead>
-                                <Tr bg={tableRowColor}>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Page name
-                                    </Th>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Visitors
-                                    </Th>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Unique users
-                                    </Th>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Bounce rate
-                                    </Th>
-                                </Tr>
-                            </Thead>
-                        </Table>
-                    </Box>
-                </Flex>
-            </Card>
-            <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
-                <Flex direction='column'>
-                    <Flex align='center' justify='space-between' p='22px'>
-                        <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                            Social traffic
-                        </Text>
-                        <Button variant='primary' maxH='30px'>
-                            SEE ALL
-                        </Button>
-                    </Flex>
-                </Flex>
-                <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-                    <Table>
-                        <Thead>
-                            <Tr bg={tableRowColor}>
-                                <Th color='gray.400' borderColor={borderColor}>
-                                    Referral
-                                </Th>
-                                <Th color='gray.400' borderColor={borderColor}>
-                                    Visitors
-                                </Th>
-                                <Th color='gray.400' borderColor={borderColor}></Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-
-                        </Tbody>
-                    </Table>
                 </Box>
             </Card>
         </Grid>
