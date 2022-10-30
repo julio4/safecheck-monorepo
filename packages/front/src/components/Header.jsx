@@ -31,6 +31,7 @@ const Header = (props => {
       <Outlet />
     </>
   );
+  
 });
 
 export default Header;

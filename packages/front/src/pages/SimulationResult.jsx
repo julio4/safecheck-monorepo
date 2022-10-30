@@ -29,14 +29,20 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
-    GridItem
+    GridItem,
+    InputGroup,
+    InputLeftElement,
+    Input,
+    Container
 } from "@chakra-ui/react";
 
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 import {
     WalletIcon,
 } from "../components/Icons";
+
+import axios from "axios";
 
 import Card from "../components/Card";
 import IconBox from "../components/IconBox";
@@ -127,7 +133,9 @@ const lineChartOptions = {
 const SimulationResult = () => {
     const iconBoxInside = useColorModeValue("white", "white");
 
-    return <Flex flexDirection='column' backgroundColor={'gray.50'} pt={{ base: "120px", md: "75px" }}>
+    //const result = axios.get('http://localhost:3001/api/v1/contract/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
+
+    return <Flex paddingTop={"2rem"} flexDirection='column' backgroundColor={'gray.50'} >
         <SimpleGrid padding={{ base: "0 0.5rem", md: "0 2rem" }} className="simulationDataGrid" columns={{ sm: 1, md: 1, xl: 3 }} mb='20px' gap='20px'>
             <Card>
                 <Flex
@@ -218,12 +226,13 @@ const SimulationResult = () => {
             padding={{ base: "0 0.5rem", md: "0 2rem" }}
             templateColumns={{ sm: "1fr", lg: "2fr 1fr" }}
             templateRows={{ lg: "repeat(2, auto)" }}
-            gap='20px'>
+            gap='20px'
+            margin={"0 0 3rem 0"}>
             <Card borderRadius='1rem'
                 bg={"white"}
                 p='0px'
                 maxW={{ md: "100%" }}>
-                <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
+                <Flex direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SMART CONTRACT CALL
                     </Text>
@@ -241,7 +250,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
+                <Flex display={"none"} direction='column' mb='40px' p='0.5rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
@@ -305,11 +314,39 @@ const SimulationResult = () => {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
                 </Flex>
-                <Box minH='300px'>
-                    {/* <BarChart chartData={barChartData} chartOptions={barChartOptions} /> */}
-                </Box>
+                <Flex className="formContainer" direction='column' mb='40px' p='0.5rem 1.5rem'>
+                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
+                        SIMULATION
+                    </Text>
+                    <InputGroup>
+                        <InputLeftElement
+                            pointerEvents='none'
+                            color='gray.300'
+                            fontSize='1.2em'>
+                            <Text fontSize='md'>To :</Text>
+                        </InputLeftElement>
+                        <Input placeholder='To' isDisabled isReadOnly value={"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"} bg={'gray.100'} focusBorderColor={'orange.200'} />
+
+                    </InputGroup>
+                    <Input placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
+
+                    <Link to='/simulationResult'>
+                        <Button leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
+                            mt={8}
+                            w={'full'}
+                            bgGradient="linear(to-r, red.400,orange.400)"
+                            color={'white'}
+                            _hover={{
+                                bgGradient: 'linear(to-r, red.400,orange.400)',
+                                boxShadow: 'xl',
+                            }}>
+                            Submit
+                        </Button>
+                    </Link>
+                </Flex>
             </Card>
         </Grid>
     </Flex>

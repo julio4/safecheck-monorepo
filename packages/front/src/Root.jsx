@@ -1,4 +1,4 @@
-import Header from './components/Header';
+import NavBar from './components/NavBar';
 import Insights from './pages/Insights';
 import SimulationResult from './pages/SimulationResult';
 import Contracts from './pages/Contracts';
@@ -16,7 +16,7 @@ const Root = () => {
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Header />}>
+          <Route path='/' element={<NavBar />}>
             <Route index element={<Home />} />
             <Route path='contracts/:address' element={<Contracts />} />
             <Route path='insights' element={<Insights />} />
