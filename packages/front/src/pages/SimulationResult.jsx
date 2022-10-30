@@ -72,16 +72,14 @@ const SimulationResult = () => {
         });
     }, []);
 
-    const callSimulationService = function () {
-        formResult["to"] = contractData.bacalhau.contractAdress;
-        simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-            if (data.data.status === 1) {
-                console.log(data.data)
-                data.data.simulation["loaded"] = true;
-                setSimulationData(data.data.simulation);
-            }
-        });
-    }
+  const callSimulationService = function () {
+    formResult["to"] = contractData.bacalhau.contractAdress;
+    simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
+      console.log(data.data)
+      data.data.simulation["loaded"] = true;
+      setSimulationData(data.data.simulation);
+    });
+  }
 
     const iconBoxInside = useColorModeValue("white", "white");
 
