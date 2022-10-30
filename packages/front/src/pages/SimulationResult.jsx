@@ -250,7 +250,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={"none"} direction='column' mb='40px' p='0.5rem 1.5rem'>
+                <Flex display={"none"} direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
@@ -315,11 +315,11 @@ const SimulationResult = () => {
                         </AccordionItem>
                     </Accordion>
                 </Flex>
-                <Flex className="formContainer" direction='column' mb='40px' p='0.5rem 1.5rem'>
+                <Flex className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION
                     </Text>
-                    <InputGroup>
+                    <InputGroup margin={"0.5rem 0"}>
                         <InputLeftElement
                             pointerEvents='none'
                             color='gray.300'
@@ -329,9 +329,9 @@ const SimulationResult = () => {
                         <Input placeholder='To' isDisabled isReadOnly value={"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"} bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     </InputGroup>
-                    <Input placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input margin={"0.5rem 0"} placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input margin={"0.5rem 0"} placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input margin={"0.5rem 0"} placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     <Link to='/simulationResult'>
                         <Button leftIcon={<ArrowRightIcon />} fontFamily={'heading'}

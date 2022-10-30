@@ -76,10 +76,10 @@ export default function NavBar() {
                         fontSize={'md'}
                         fontWeight={"bold"}
                         color={'white'}
-                        backgroundColor={'orange.500'}
+                        bgGradient={'linear(to-r, red.400,orange.400)'}
                         href={'#'}
                         _hover={{
-                            bg: 'orange.400',
+                            bgGradient: 'linear(to-r, red.300,orange.300)',
                         }}>
                         Add SafeCheck to Metamask
                     </Button>

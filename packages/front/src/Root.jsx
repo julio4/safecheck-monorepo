@@ -1,9 +1,7 @@
 import NavBar from './components/NavBar';
-import Insights from './pages/Insights';
 import SimulationResult from './pages/SimulationResult';
 import Contracts from './pages/Contracts';
 import NotFound from './pages/NotFound';
-import Home from './pages/Home';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -17,9 +15,8 @@ const Root = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<NavBar />}>
-            <Route index element={<Home />} />
+            <Route index element={<Contracts />} />
             <Route path='contracts/:address' element={<Contracts />} />
-            <Route path='insights' element={<Insights />} />
             <Route path='SimulationResult' element={<SimulationResult />} />
             <Route path='*' element={<NotFound />} />
           </Route>

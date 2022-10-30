@@ -10,7 +10,7 @@ import {
   Input,
   Button,
   SimpleGrid,
-  Avatar,
+  Link,
   AvatarGroup,
   useBreakpointValue,
   IconProps,
@@ -18,73 +18,74 @@ import {
   Center
 } from '@chakra-ui/react';
 
-export default function Contracts () {
+export default function Contracts() {
   const a = useParams();
   return (
     <Box position={'relative'}>
-          <Container
-            as={SimpleGrid}
-            maxW={'7xl'}
-            columns={{ base: 1, md: 2 }}
-            spacing={{ base: 10, lg: 32 }}
-            py={{ base: 10, sm: 20, lg: 32 }}>
-            <Stack spacing={{ base: 10, md: 20 }}>
-              <Heading
-                lineHeight={1.1}
-                fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-                SafeCheck
-              </Heading>
+      <Container
+        as={SimpleGrid}
+        maxW={'7xl'}
+        columns={{ base: 1, md: 2 }}
+        spacing={{ base: 10, lg: 32 }}
+        py={{ base: 10, sm: 20, lg: 32 }}>
+        <Stack spacing={{ base: 10, md: 20 }}>
+          <Heading
+            lineHeight={1.1}
+            fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
+            SafeCheck
+          </Heading>
+        </Stack>
+        <Stack
+          bg={'gray.50'}
+          rounded={'xl'}
+          p={{ base: 4, sm: 6, md: 8 }}
+          spacing={{ base: 8 }}
+          maxW={{ lg: 'lg' }}>
+          <Stack spacing={4}>
+            <Heading
+              color={'gray.800'}
+              lineHeight={1.1}
+              fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
+              <Center>
+                Search a contract
+              </Center>
+            </Heading>
+          </Stack>
+          <Box as={'form'} mt={10}>
+            <Stack spacing={4}>
+              <Input
+                placeholder="contract address"
+                bg={'gray.100'}
+                border={0}
+                color={'gray.500'}
+                _placeholder={{
+                  color: 'gray.500',
+                }}
+              />
+              <Button
+
+                fontFamily={'heading'}
+                mt={8}
+                w={'full'}
+                bgGradient='linear(to-r, red.400,orange.400)'
+                color={'white'}
+                _hover={{
+                  bgGradient: 'linear(to-r, red.300,orange.300)',
+                  boxShadow: 'xl',
+                }}>
+                Submit
+              </Button>
             </Stack>
-            <Stack
-              bg={'gray.50'}
-              rounded={'xl'}
-              p={{ base: 4, sm: 6, md: 8 }}
-              spacing={{ base: 8 }}
-              maxW={{ lg: 'lg' }}>
-              <Stack spacing={4}>
-                <Heading
-                  color={'gray.800'}
-                  lineHeight={1.1}
-                  fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-                  <Center>
-                    Search a contract
-                  </Center>
-                </Heading>
-              </Stack>
-              <Box as={'form'} mt={10}>
-                <Stack spacing={4}>
-                  <Input
-                    placeholder="contract address"
-                    bg={'gray.100'}
-                    border={0}
-                    color={'gray.500'}
-                    _placeholder={{
-                      color: 'gray.500',
-                    }}
-                  />
-                  <Button
-                    fontFamily={'heading'}
-                    mt={8}
-                    w={'full'}
-                    bgGradient="linear(to-r, red.400,pink.400)"
-                    color={'white'}
-                    _hover={{
-                      bgGradient: 'linear(to-r, red.400,pink.400)',
-                      boxShadow: 'xl',
-                    }}>
-                    Submit
-                  </Button>
-                </Stack>         
-              </Box>
-              form
-            </Stack>
-          </Container>
-          <Blur
-            position={'absolute'}
-            top={-10}
-            left={-10}
-            style={{ filter: 'blur(70px)' }}
-          />
+          </Box>
+          form
+        </Stack>
+      </Container>
+      <Blur
+        position={'absolute'}
+        top={-10}
+        left={-10}
+        style={{ filter: 'blur(70px)' }}
+      />
     </Box>
   )
 };
