@@ -24,6 +24,7 @@ import {
 
 import { Outlet } from 'react-router-dom';
 
+import { ReactComponent as Logo } from '../assets/logo.svg'
 
 export default function NavBar() {
     const { isOpen, onToggle } = useDisclosure();
@@ -71,12 +72,7 @@ export default function NavBar() {
             />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}>
-            Logo
-          </Text>
+          <Logo width={150}/>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav />
@@ -257,9 +253,4 @@ const MobileNavItem = ({ label, children, href }) => {
   );
 };
 
-const NAV_ITEMS = [
-  {
-    label: 'Contract',
-    href: '/contracts/0x0',
-  },
-];
+const NAV_ITEMS = [];
