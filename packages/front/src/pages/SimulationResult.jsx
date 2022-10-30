@@ -75,11 +75,9 @@ const SimulationResult = () => {
     const callSimulationService = function () {
         formResult["to"] = contractData.bacalhau.contractAdress;
         simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-            if (data.data.status === 1) {
-                console.log(data.data)
-                data.data.simulation["loaded"] = true;
-                setSimulationData(data.data.simulation);
-            }
+            console.log(data.data)
+            data.data.simulation["loaded"] = true;
+            setSimulationData(data.data.simulation);
         });
     }
 
