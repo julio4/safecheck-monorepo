@@ -276,9 +276,9 @@ const SimulationResult = () => {
                     </Text>
                     <Stack direction='row'>
                         {
-                            simulationData.standards.map((standard, index) => {
+                            simulationData.standards?simulationData.standards.map((standard, index) => {
                                 return <Badge key={index} colorScheme='orange'>{standard}</Badge>
-                            })
+                            }) : ""
                         }
                     </Stack>
                     <Accordion margin={"0.5rem 0"} defaultIndex={[0, 1]} allowMultiple>
@@ -303,9 +303,9 @@ const SimulationResult = () => {
                                         </Thead>
                                         <Tbody>
                                             <Tr>
-                                                <Td>{simulationData.token_data.name}</Td>
-                                                <Td>{simulationData.token_data.symbol}</Td>
-                                                <Td isNumeric>{simulationData.token_data.decimals}</Td>
+                                                <Td>{simulationData.token_data?simulationData.token_data.name:""}</Td>
+                                                <Td>{simulationData.token_data?simulationData.token_data.symbol:""}</Td>
+                                                <Td isNumeric>{simulationData.token_data?simulationData.token_data.decimals:""}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
