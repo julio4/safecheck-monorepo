@@ -37,103 +37,33 @@ import {
 } from "@chakra-ui/react";
 
 import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { getContract } from "../services/contract";
 
 import {
     WalletIcon,
 } from "../components/Icons";
-
-import axios from "axios";
 
 import Card from "../components/Card";
 import IconBox from "../components/IconBox";
 import LineChart from "../components/LineChart";
 
 import '../css/SimulationResult.css';
-
-const lineChartData = [
-    {
-        name: "Mobile apps",
-        data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-    }
-];
-const lineChartOptions = {
-    chart: {
-        toolbar: {
-            show: false,
-        },
-    },
-    tooltip: {
-        theme: "dark",
-    },
-    dataLabels: {
-        enabled: false,
-    },
-    stroke: {
-        curve: "smooth",
-    },
-    xaxis: {
-        type: "datetime",
-        categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
-        axisTicks: {
-            show: false
-        },
-        axisBorder: {
-            show: false,
-        },
-        labels: {
-            style: {
-                colors: "#a8b5c5",
-                fontSize: "12px",
-            },
-        },
-    },
-    yaxis: {
-        labels: {
-            style: {
-                colors: "#a8b5c5",
-                fontSize: "12px",
-            },
-        },
-    },
-    legend: {
-        show: false,
-    },
-    grid: {
-        strokeDashArray: 5,
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shade: "light",
-            type: "vertical",
-            shadeIntensity: 0.5,
-            inverseColors: true,
-            opacityFrom: 0.8,
-            opacityTo: 0,
-            stops: [],
-        },
-        colors: ["#D18700", "#3182CE"],
-    },
-    colors: ["#FFA500", "#FFA500"],
-};
+import { useEffect, useState } from "react";
 
 const SimulationResult = () => {
-    const iconBoxInside = useColorModeValue("white", "white");
 
-    //const result = axios.get('http://localhost:3001/api/v1/contract/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
+    const [contractData, setContractData] = useState({
+        addressCallCount: []
+    });
+
+    useEffect(() => {
+        getContract("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2").then((data) => {
+            console.log(data.data.resp)
+            setContractData(data.data.resp);
+        });
+    }, []);
+
+    const iconBoxInside = useColorModeValue("white", "white");
 
     return <Flex paddingTop={"2rem"} flexDirection='column' backgroundColor={'gray.50'} >
         <SimpleGrid padding={{ base: "0 0.5rem", md: "0 2rem" }} className="simulationDataGrid" columns={{ sm: 1, md: 1, xl: 3 }} mb='20px' gap='20px'>
@@ -238,15 +168,79 @@ const SimulationResult = () => {
                     </Text>
                     <Text color='#6492aa' fontSize='sm'>
                         <Text as='span' color='orange.400' fontWeight='bold'>
-                            19.942{" "}
+                            {contractData.addressCallCount.length}{" "}
                         </Text>
-                        in 2022
+                        uniq users
                     </Text>
                 </Flex>
                 <Box minH='300px'>
                     <LineChart
-                        chartData={lineChartData}
-                        chartOptions={lineChartOptions} />
+                        chartData={[
+                            {
+                                name: "Calls to contract",
+                                data: contractData.transactionOverTime,
+                            }
+                        ]}
+                        chartOptions={{
+                            chart: {
+                                toolbar: {
+                                    show: false,
+                                },
+                            },
+                            tooltip: {
+                                theme: "dark",
+                            },
+                            dataLabels: {
+                                enabled: false,
+                            },
+                            stroke: {
+                                curve: "smooth",
+                            },
+                            xaxis: {
+                                type: "datetime",
+                                categories: contractData.timePlot,
+                                axisTicks: {
+                                    show: false
+                                },
+                                axisBorder: {
+                                    show: false,
+                                },
+                                labels: {
+                                    style: {
+                                        colors: "#a8b5c5",
+                                        fontSize: "12px",
+                                    },
+                                },
+                            },
+                            yaxis: {
+                                labels: {
+                                    style: {
+                                        colors: "#a8b5c5",
+                                        fontSize: "12px",
+                                    },
+                                },
+                            },
+                            legend: {
+                                show: false,
+                            },
+                            grid: {
+                                strokeDashArray: 5,
+                            },
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                    shade: "light",
+                                    type: "vertical",
+                                    shadeIntensity: 0.5,
+                                    inverseColors: true,
+                                    opacityFrom: 0.8,
+                                    opacityTo: 0,
+                                    stops: [],
+                                },
+                                colors: ["#D18700", "#3182CE"],
+                            },
+                            colors: ["#FFA500", "#FFA500"],
+                        }} />
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
@@ -326,7 +320,7 @@ const SimulationResult = () => {
                             fontSize='1.2em'>
                             <Text fontSize='md'>To :</Text>
                         </InputLeftElement>
-                        <Input placeholder='To' isDisabled isReadOnly value={"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"} bg={'gray.100'} focusBorderColor={'orange.200'} />
+                        <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.contractAdress} bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     </InputGroup>
                     <Input margin={"0.5rem 0"} placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
