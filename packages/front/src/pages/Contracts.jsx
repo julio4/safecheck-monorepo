@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   Box,
-  Flex,
   Stack,
   Heading,
-  Text,
   Container,
   Input,
   Button,
   SimpleGrid,
-  Link,
-  AvatarGroup,
   useBreakpointValue,
-  IconProps,
   Icon,
   Center
 } from '@chakra-ui/react';

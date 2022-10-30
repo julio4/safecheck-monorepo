@@ -3,11 +3,9 @@ import {
     Button,
     Flex,
     Grid,
-    Progress,
     SimpleGrid,
     Stat,
     StatLabel,
-    StatNumber,
     Table,
     Tbody,
     Td,
@@ -16,13 +14,9 @@ import {
     Thead,
     Tr,
     Link,
-    useColorMode,
     useColorModeValue,
     Badge,
     Stack,
-    Divider,
-    TableCaption,
-    Tfoot,
     TableContainer,
     Accordion,
     AccordionItem,
@@ -32,8 +26,7 @@ import {
     GridItem,
     InputGroup,
     InputLeftElement,
-    Input,
-    Container
+    Input
 } from "@chakra-ui/react";
 
 import Web3 from "web3";
@@ -79,7 +72,7 @@ const SimulationResult = () => {
     const callSimulationService = function () {
         formResult["to"] = contractData.bacalhau.contractAdress;
         simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-            if (data.data.status = 1) {
+            if (data.data.status === 1) {
                 console.log(data.data)
                 data.data.simulation["loaded"] = true;
                 setSimulationData(data.data.simulation);
@@ -282,7 +275,7 @@ const SimulationResult = () => {
                         }
                     </Stack>
                     <Accordion margin={"0.5rem 0"} defaultIndex={[0, 1]} allowMultiple>
-                        <AccordionItem display={simulationData.token_data != {} ? "block" : "none"}>
+                        <AccordionItem display={simulationData.token_data !== {} ? "block" : "none"}>
                             <h2>
                                 <AccordionButton>
                                     <Box flex='1' textAlign='left'>
@@ -313,7 +306,7 @@ const SimulationResult = () => {
                             </AccordionPanel>
                         </AccordionItem>
 
-                        <AccordionItem display={simulationData.balance_diff != { original: "-1", dirty: "-1" } ? "block" : "none"}>
+                        <AccordionItem display={simulationData.balance_diff !== { original: "-1", dirty: "-1" } ? "block" : "none"}>
                             <h2>
                                 <AccordionButton>
                                     <Box flex='1' textAlign='left'>
