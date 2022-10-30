@@ -72,14 +72,14 @@ const SimulationResult = () => {
         });
     }, []);
 
-  const callSimulationService = function () {
-    formResult["to"] = contractData.bacalhau.contractAdress;
-    simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-      console.log(data.data)
-      data.data.simulation["loaded"] = true;
-      setSimulationData(data.data.simulation);
-    });
-  }
+    const callSimulationService = function () {
+        formResult["to"] = contractData.bacalhau.contractAdress;
+        simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
+            console.log(data.data)
+            data.data.simulation["loaded"] = true;
+            setSimulationData(data.data.simulation);
+        });
+    }
 
     const iconBoxInside = useColorModeValue("white", "white");
 
@@ -268,7 +268,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={simulationData.loaded ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                <Flex display={simulationData.loaded && !simulationData.error.message ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
@@ -340,7 +340,12 @@ const SimulationResult = () => {
                         </AccordionItem>
                     </Accordion>
                 </Flex>
-
+                <Flex display={simulationData.loaded && simulationData.error.message ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
+                        SIMULATION ERROR
+                    </Text>
+                    <Code colorScheme='red' children={simulationData.error.message ? simulationData.error.message : ""} />
+                </Flex>
                 <Flex display={simulationData.loaded ? "none" : "block"} className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION
