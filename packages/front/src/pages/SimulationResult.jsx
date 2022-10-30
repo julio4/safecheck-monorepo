@@ -62,6 +62,7 @@ const SimulationResult = () => {
         standards: [],
         token_data: {},
         balance_diff: { original: "-1", dirty: "-1" },
+        error: {}
     });
 
     useEffect(() => {
@@ -267,7 +268,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={simulationData.loaded && !simulationData.error ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                <Flex display={simulationData.loaded ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
@@ -339,12 +340,7 @@ const SimulationResult = () => {
                         </AccordionItem>
                     </Accordion>
                 </Flex>
-                <Flex display={simulationData.loaded && simulationData.error ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
-                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-                        SIMULATION ERROR
-                    </Text>
-                    <Code colorScheme='red' children={simulationData.error ? simulationData.error.message : ""} />
-                </Flex>
+
                 <Flex display={simulationData.loaded ? "none" : "block"} className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION
