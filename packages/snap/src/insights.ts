@@ -2,7 +2,6 @@ import { Insights, TransactionObject } from "./types";
 import { apiOptions } from "../snap.config";
 
 export const getInsights = async (tx: TransactionObject) => {
-
   let response = undefined;
   try {
     response = await fetch(apiOptions.endpoint, {
@@ -20,7 +19,6 @@ export const getInsights = async (tx: TransactionObject) => {
       }
     }
   }
-
   let insights: Insights = await response.json();
-  return { insights };
+  return insights
 }
