@@ -12,7 +12,6 @@ import {
     PopoverTrigger,
     PopoverContent,
     useColorModeValue,
-    useBreakpointValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import {
@@ -36,7 +35,7 @@ export default function NavBar() {
         params: [
           {
             wallet_snap: {
-              ['local:http://localhost:8080']: {},
+              'local:http://localhost:8080': {}
             },
           },
         ],

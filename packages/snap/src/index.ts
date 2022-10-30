@@ -7,3 +7,5 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
   const insights_data = await getInsights(transaction)
   return { insights: insights_data }
 };
+
+export const onRpcRequest = async () => {}
