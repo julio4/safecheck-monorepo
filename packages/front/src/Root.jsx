@@ -8,15 +8,13 @@ import { ChakraProvider } from '@chakra-ui/react'
 import './css/Root.css'
 
 const Root = () => {
-  
-
   return (
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<NavBar />}>
             <Route index element={<Contracts />} />
-            <Route path='contracts/:address' element={<Contracts />} />
+            <Route path='contract/:address' element={<SimulationResult />} />
             <Route path='SimulationResult' element={<SimulationResult />} />
             <Route path='*' element={<NotFound />} />
           </Route>
