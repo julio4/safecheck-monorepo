@@ -55,6 +55,7 @@ import { useEffect, useState } from "react";
 
 
 const SimulationResult = () => {
+    let formResult = {}
 
     const [contractData, setContractData] = useState({
         addressCallCount: [],
@@ -63,7 +64,7 @@ const SimulationResult = () => {
 
     const [simulationData, setSimulationData] = useState({
         loaded: false,
-        standards: ["ERC20", "ERC721"],
+        standards: [],
         token_data: {},
         balance_diff: { original: "-1", dirty: "-1" },
     });
@@ -76,10 +77,13 @@ const SimulationResult = () => {
     }, []);
 
     const callSimulationService = function () {
-        simulate("", "", "", "").then((data) => {
-            console.log(data.data.res)
-            data.data.res["loaded"] = true;
-            setSimulationData(data.data.res);
+        formResult["to"] = contractData.contractAdress;
+        simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
+            if (data.data.status = 1) {
+                console.log(data.data)
+                data.data.simulation.data["loaded"] = true;
+                setSimulationData(data.data.simulation.data);
+            }
         });
     }
 
@@ -273,7 +277,7 @@ const SimulationResult = () => {
                     <Stack direction='row'>
                         {
                             simulationData.standards.forEach(standard => {
-                                <Badge colorScheme='orange' displayName={standard}></Badge>
+                                <Badge colorScheme='orange'>{standard}</Badge>
                             })
                         }
                     </Stack>
@@ -309,7 +313,7 @@ const SimulationResult = () => {
                             </AccordionPanel>
                         </AccordionItem>
 
-                        <AccordionItem display={simulationData.balance_diff != { original: -1, dirty: -1 } ? "block" : "none"}>
+                        <AccordionItem display={simulationData.balance_diff != { original: "-1", dirty: "-1" } ? "block" : "none"}>
                             <h2>
                                 <AccordionButton>
                                     <Box flex='1' textAlign='left'>
@@ -352,12 +356,24 @@ const SimulationResult = () => {
                         <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.contractAdress} bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     </InputGroup>
-                    <Input margin={"0.5rem 0"} placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input margin={"0.5rem 0"} placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input margin={"0.5rem 0"} placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input onInput={
+                        (e) => {
+                            formResult["from"] = e.target.value;
+                        }
+                    } margin={"0.5rem 0"} placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input onInput={
+                        (e) => {
+                            formResult["data"] = e.target.value;
+                        }
+                    } margin={"0.5rem 0"} placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
+                    <Input onInput={
+                        (e) => {
+                            formResult["value"] = Web3.utils.toWei(e.target.value, 'ether');
+                        }
+                    } margin={"0.5rem 0"} placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     <Link to='/simulationResult'>
-                        <Button leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
+                        <Button onClick={callSimulationService} leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
                             mt={8}
                             w={'full'}
                             bgGradient="linear(to-r, red.400,orange.400)"
@@ -365,8 +381,7 @@ const SimulationResult = () => {
                             _hover={{
                                 bgGradient: 'linear(to-r, red.400,orange.400)',
                                 boxShadow: 'xl',
-                            }}
-                            onClick={callSimulationService}>
+                            }}>
                             Submit
                         </Button>
                     </Link>
