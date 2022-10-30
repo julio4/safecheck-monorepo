@@ -36,8 +36,11 @@ import {
     Container
 } from "@chakra-ui/react";
 
+import Web3 from "web3";
+
 import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { getContract } from "../services/contract";
+import { simulate } from "../services/simulation";
 
 import {
     WalletIcon,
@@ -50,10 +53,19 @@ import LineChart from "../components/LineChart";
 import '../css/SimulationResult.css';
 import { useEffect, useState } from "react";
 
+
 const SimulationResult = () => {
 
     const [contractData, setContractData] = useState({
-        addressCallCount: []
+        addressCallCount: [],
+        timePlot: [],
+    });
+
+    const [simulationData, setSimulationData] = useState({
+        loaded: false,
+        standards: ["ERC20", "ERC721"],
+        token_data: {},
+        balance_diff: { original: "-1", dirty: "-1" },
     });
 
     useEffect(() => {
@@ -62,6 +74,14 @@ const SimulationResult = () => {
             setContractData(data.data.resp);
         });
     }, []);
+
+    const callSimulationService = function () {
+        simulate("", "", "", "").then((data) => {
+            console.log(data.data.res)
+            data.data.res["loaded"] = true;
+            setSimulationData(data.data.res);
+        });
+    }
 
     const iconBoxInside = useColorModeValue("white", "white");
 
@@ -80,8 +100,8 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             Creator address
                         </StatLabel>
-                        <Link fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
-                            0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B
+                        <Link fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.creatorAddress}`}>
+                            {contractData.creatorAddress}
                         </Link>
                     </Stat>
                     <IconBox
@@ -108,8 +128,8 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             Creation date
                         </StatLabel>
-                        <Text fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
-                            29-10-2022
+                        <Text fontSize='sm' fontWeight='bold' color='orange.500'>
+                            {new Date(contractData.creationDate).toLocaleDateString()}
                         </Text>
                     </Stat>
                     <IconBox
@@ -134,10 +154,10 @@ const SimulationResult = () => {
                             color='gray.400'
                             fontWeight='bold'
                             textTransform='uppercase'>
-                            30 days calls
+                            {`Total calls after ${new Date(contractData.oldestTimeStamp).toLocaleDateString()}`}
                         </StatLabel>
                         <Text fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
-                            560
+                            {Object.values(contractData.addressCallCount).reduce((partialSum, a) => partialSum + a, 0)}
                         </Text>
                     </Stat>
                     <IconBox
@@ -164,13 +184,13 @@ const SimulationResult = () => {
                 maxW={{ md: "100%" }}>
                 <Flex direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-                        SMART CONTRACT CALL
+                        SMART CONTRACT CALLS
                     </Text>
                     <Text color='#6492aa' fontSize='sm'>
                         <Text as='span' color='orange.400' fontWeight='bold'>
-                            {contractData.addressCallCount.length}{" "}
+                            {Object.keys(contractData.addressCallCount).length}{" "}
                         </Text>
-                        uniq users
+                        unique users
                     </Text>
                 </Flex>
                 <Box minH='300px'>
@@ -197,8 +217,10 @@ const SimulationResult = () => {
                                 curve: "smooth",
                             },
                             xaxis: {
-                                type: "datetime",
-                                categories: contractData.timePlot,
+                                type: "string",
+                                categories: contractData.timePlot.map(function (ts) {
+                                    return new Date(ts).toLocaleDateString();
+                                }),
                                 axisTicks: {
                                     show: false
                                 },
@@ -244,16 +266,19 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={"none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                <Flex display={simulationData.loaded ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
                     <Stack direction='row'>
-                        <Badge colorScheme='orange'>ERC20</Badge>
-                        <Badge colorScheme='orange'>ERC721</Badge>
+                        {
+                            simulationData.standards.forEach(standard => {
+                                <Badge colorScheme='orange' displayName={standard}></Badge>
+                            })
+                        }
                     </Stack>
                     <Accordion margin={"0.5rem 0"} defaultIndex={[0, 1]} allowMultiple>
-                        <AccordionItem>
+                        <AccordionItem display={simulationData.token_data != {} ? "block" : "none"}>
                             <h2>
                                 <AccordionButton>
                                     <Box flex='1' textAlign='left'>
@@ -274,9 +299,9 @@ const SimulationResult = () => {
                                         </Thead>
                                         <Tbody>
                                             <Tr>
-                                                <Td>Wrapped Ether</Td>
-                                                <Td>WETH</Td>
-                                                <Td isNumeric>18</Td>
+                                                <Td>{simulationData.token_data.name}</Td>
+                                                <Td>{simulationData.token_data.symbol}</Td>
+                                                <Td isNumeric>{simulationData.token_data.decimals}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -284,7 +309,7 @@ const SimulationResult = () => {
                             </AccordionPanel>
                         </AccordionItem>
 
-                        <AccordionItem>
+                        <AccordionItem display={simulationData.balance_diff != { original: -1, dirty: -1 } ? "block" : "none"}>
                             <h2>
                                 <AccordionButton>
                                     <Box flex='1' textAlign='left'>
@@ -296,20 +321,24 @@ const SimulationResult = () => {
                             <AccordionPanel pb={4}>
                                 <Grid templateColumns='repeat(20, 1fr)' gap={"0.2rem"}>
                                     <GridItem colSpan={"9"} w='100%' h='10'>
-                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='red'>0.35ETH</Badge>
+                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='red'>{
+                                            Web3.utils.fromWei(simulationData.balance_diff.original, 'ether').match("[0-9]*.[0-9]{3}")
+                                        } ETH</Badge>
                                     </GridItem>
                                     <GridItem colSpan={"2"} w='100%' h='10'>
                                         <ArrowForwardIcon color={"gray.400"} height={"100%"} width={"100%"} />
                                     </GridItem>
                                     <GridItem colSpan={"9"} w='100%' h='10'>
-                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='green'>0.05ETH</Badge>
+                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='green'>{
+                                            Web3.utils.fromWei(simulationData.balance_diff.dirty, 'ether').match("[0-9]*.[0-9]{3}")
+                                        } ETH</Badge>
                                     </GridItem>
                                 </Grid>
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
                 </Flex>
-                <Flex className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
+                <Flex display={simulationData.loaded ? "none" : "block"} className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION
                     </Text>
@@ -336,14 +365,14 @@ const SimulationResult = () => {
                             _hover={{
                                 bgGradient: 'linear(to-r, red.400,orange.400)',
                                 boxShadow: 'xl',
-                            }}>
+                            }}
+                            onClick={callSimulationService}>
                             Submit
                         </Button>
                     </Link>
                 </Flex>
             </Card>
         </Grid>
-    </Flex>
+    </Flex >
 }
-
 export default SimulationResult;
