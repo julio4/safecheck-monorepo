@@ -27,8 +27,7 @@ import {
     InputGroup,
     InputLeftElement,
     Input,
-    Container,
-    Spinner,
+    Code,
     Skeleton
 } from "@chakra-ui/react";
 
@@ -268,7 +267,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={simulationData.loaded ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                <Flex display={simulationData.loaded && !simulationData.error ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
                         SIMULATION RESULT
                     </Text>
@@ -324,7 +323,7 @@ const SimulationResult = () => {
                                 <Grid templateColumns='repeat(20, 1fr)' gap={"0.2rem"}>
                                     <GridItem colSpan={"9"} w='100%' h='10'>
                                         <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='red'>{
-                                            Web3.utils.fromWei(simulationData.balance_diff.original, 'ether').match("[0-9]*.[0-9]{3}")
+                                            simulationData.balance_diff ? Web3.utils.fromWei(simulationData.balance_diff.original, 'ether').match("[0-9]*.[0-9]{3}") : ""
                                         } ETH</Badge>
                                     </GridItem>
                                     <GridItem colSpan={"2"} w='100%' h='10'>
@@ -332,13 +331,19 @@ const SimulationResult = () => {
                                     </GridItem>
                                     <GridItem colSpan={"9"} w='100%' h='10'>
                                         <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='green'>{
-                                            Web3.utils.fromWei(simulationData.balance_diff.dirty, 'ether').match("[0-9]*.[0-9]{3}")
+                                            simulationData.balance_diff ? Web3.utils.fromWei(simulationData.balance_diff.dirty, 'ether').match("[0-9]*.[0-9]{3}") : ""
                                         } ETH</Badge>
                                     </GridItem>
                                 </Grid>
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
+                </Flex>
+                <Flex display={simulationData.loaded && simulationData.error ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
+                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
+                        SIMULATION ERROR
+                    </Text>
+                    <Code colorScheme='red' children={simulationData.error ? simulationData.error.message : ""} />
                 </Flex>
                 <Flex display={simulationData.loaded ? "none" : "block"} className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
                     <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
