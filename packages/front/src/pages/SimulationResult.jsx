@@ -33,7 +33,9 @@ import {
     InputGroup,
     InputLeftElement,
     Input,
-    Container
+    Container,
+    Spinner,
+    Skeleton
 } from "@chakra-ui/react";
 
 import Web3 from "web3";
@@ -104,9 +106,11 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             Creator address
                         </StatLabel>
-                        <Link fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.dataTx ? contractData.dataTx.contractCreator : ""}`}>
+                        <Link display={contractData.dataTx ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.dataTx ? contractData.dataTx.contractCreator : ""}`}>
                             {contractData.dataTx ? contractData.dataTx.contractCreator : ""}
                         </Link>
+                        <Skeleton display={contractData.dataTx ? "none" : "block"} height='20px' width={"95%"} />
+
                     </Stat>
                     <IconBox
                         borderRadius='1rem'
@@ -132,9 +136,10 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             Creation date
                         </StatLabel>
-                        <Text fontSize='sm' fontWeight='bold' color='orange.500'>
+                        <Text display={contractData.dataTx ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500'>
                             {contractData.dataTx ? new Date(contractData.dataTx.creationTimestamp).toLocaleDateString() : ""}
                         </Text>
+                        <Skeleton display={contractData.dataTx ? "none" : "block"} height='20px' width={"95%"} />
                     </Stat>
                     <IconBox
                         borderRadius='1rem'
@@ -160,9 +165,10 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             {`Total calls after ${contractData.dataTx ? new Date(contractData.bacalhau.oldestTimeStamp).toLocaleDateString() : ""}`}
                         </StatLabel>
-                        <Text fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
+                        <Text display={contractData.bacalhau ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
                             {Object.values(contractData.bacalhau ? contractData.bacalhau.addressCallCount : []).reduce((partialSum, a) => partialSum + a, 0)}
                         </Text>
+                        <Skeleton display={contractData.bacalhau ? "none" : "block"} height='20px' width={"95%"} />
                     </Stat>
                     <IconBox
                         borderRadius='1rem'
@@ -276,7 +282,7 @@ const SimulationResult = () => {
                     </Text>
                     <Stack direction='row'>
                         {
-                            simulationData.standards?simulationData.standards.map((standard, index) => {
+                            simulationData.standards ? simulationData.standards.map((standard, index) => {
                                 return <Badge key={index} colorScheme='orange'>{standard}</Badge>
                             }) : ""
                         }
@@ -303,9 +309,9 @@ const SimulationResult = () => {
                                         </Thead>
                                         <Tbody>
                                             <Tr>
-                                                <Td>{simulationData.token_data?simulationData.token_data.name:""}</Td>
-                                                <Td>{simulationData.token_data?simulationData.token_data.symbol:""}</Td>
-                                                <Td isNumeric>{simulationData.token_data?simulationData.token_data.decimals:""}</Td>
+                                                <Td>{simulationData.token_data ? simulationData.token_data.name : ""}</Td>
+                                                <Td>{simulationData.token_data ? simulationData.token_data.symbol : ""}</Td>
+                                                <Td isNumeric>{simulationData.token_data ? simulationData.token_data.decimals : ""}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -354,7 +360,6 @@ const SimulationResult = () => {
                             <Text fontSize='md'>To :</Text>
                         </InputLeftElement>
                         <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.bacalhau ? contractData.bacalhau.contractAdress : ""} bg={'gray.100'} focusBorderColor={'orange.200'} />
-
                     </InputGroup>
                     <Input onInput={
                         (e) => {
