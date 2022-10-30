@@ -71,18 +71,18 @@ const SimulationResult = () => {
 
     useEffect(() => {
         getContract("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2").then((data) => {
-            console.log(data.data.resp)
-            setContractData(data.data.resp);
+            console.log(data.data)
+            setContractData(data.data);
         });
     }, []);
 
     const callSimulationService = function () {
-        formResult["to"] = contractData.contractAdress;
+        formResult["to"] = contractData.bacalhau.contractAdress;
         simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
             if (data.data.status = 1) {
                 console.log(data.data)
-                data.data.simulation.data["loaded"] = true;
-                setSimulationData(data.data.simulation.data);
+                data.data.simulation["loaded"] = true;
+                setSimulationData(data.data.simulation);
             }
         });
     }
@@ -104,8 +104,8 @@ const SimulationResult = () => {
                             textTransform='uppercase'>
                             Creator address
                         </StatLabel>
-                        <Link fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.creatorAddress}`}>
-                            {contractData.creatorAddress}
+                        <Link fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.dataTx ? contractData.dataTx.contractCreator : ""}`}>
+                            {contractData.dataTx ? contractData.dataTx.contractCreator : ""}
                         </Link>
                     </Stat>
                     <IconBox
@@ -133,7 +133,7 @@ const SimulationResult = () => {
                             Creation date
                         </StatLabel>
                         <Text fontSize='sm' fontWeight='bold' color='orange.500'>
-                            {new Date(contractData.creationDate).toLocaleDateString()}
+                            {contractData.dataTx ? new Date(contractData.dataTx.creationTimestamp).toLocaleDateString() : ""}
                         </Text>
                     </Stat>
                     <IconBox
@@ -158,10 +158,10 @@ const SimulationResult = () => {
                             color='gray.400'
                             fontWeight='bold'
                             textTransform='uppercase'>
-                            {`Total calls after ${new Date(contractData.oldestTimeStamp).toLocaleDateString()}`}
+                            {`Total calls after ${contractData.dataTx ? new Date(contractData.bacalhau.oldestTimeStamp).toLocaleDateString() : ""}`}
                         </StatLabel>
                         <Text fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
-                            {Object.values(contractData.addressCallCount).reduce((partialSum, a) => partialSum + a, 0)}
+                            {Object.values(contractData.bacalhau ? contractData.bacalhau.addressCallCount : []).reduce((partialSum, a) => partialSum + a, 0)}
                         </Text>
                     </Stat>
                     <IconBox
@@ -192,7 +192,7 @@ const SimulationResult = () => {
                     </Text>
                     <Text color='#6492aa' fontSize='sm'>
                         <Text as='span' color='orange.400' fontWeight='bold'>
-                            {Object.keys(contractData.addressCallCount).length}{" "}
+                            {Object.keys(contractData.bacalhau ? contractData.bacalhau.addressCallCount : []).length}{" "}
                         </Text>
                         unique users
                     </Text>
@@ -202,7 +202,7 @@ const SimulationResult = () => {
                         chartData={[
                             {
                                 name: "Calls to contract",
-                                data: contractData.transactionOverTime,
+                                data: contractData.bacalhau ? contractData.bacalhau.transactionOverTime : [],
                             }
                         ]}
                         chartOptions={{
@@ -222,9 +222,9 @@ const SimulationResult = () => {
                             },
                             xaxis: {
                                 type: "string",
-                                categories: contractData.timePlot.map(function (ts) {
+                                categories: contractData.bacalhau ? contractData.bacalhau.timePlot.map(function (ts) {
                                     return new Date(ts).toLocaleDateString();
-                                }),
+                                }) : [],
                                 axisTicks: {
                                     show: false
                                 },
@@ -276,8 +276,8 @@ const SimulationResult = () => {
                     </Text>
                     <Stack direction='row'>
                         {
-                            simulationData.standards.forEach(standard => {
-                                <Badge colorScheme='orange'>{standard}</Badge>
+                            simulationData.standards.map((standard, index) => {
+                                return <Badge key={index} colorScheme='orange'>{standard}</Badge>
                             })
                         }
                     </Stack>
@@ -353,7 +353,7 @@ const SimulationResult = () => {
                             fontSize='1.2em'>
                             <Text fontSize='md'>To :</Text>
                         </InputLeftElement>
-                        <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.contractAdress} bg={'gray.100'} focusBorderColor={'orange.200'} />
+                        <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.bacalhau ? contractData.bacalhau.contractAdress : ""} bg={'gray.100'} focusBorderColor={'orange.200'} />
 
                     </InputGroup>
                     <Input onInput={
