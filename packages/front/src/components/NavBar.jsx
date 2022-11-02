@@ -1,33 +1,37 @@
 import {
-    Box,
-    Flex,
-    Text,
-    IconButton,
-    Button,
-    Stack,
-    Collapse,
-    Icon,
-    Link,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    useColorModeValue,
-    useDisclosure,
+  Box,
+  Flex,
+  Text,
+  IconButton,
+  Button,
+  Stack,
+  Collapse,
+  Icon,
+  Link,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import {
-    HamburgerIcon,
-    CloseIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
+  HamburgerIcon,
+  CloseIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
 } from '@chakra-ui/icons';
 
+import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-
 import { ReactComponent as Logo } from '../assets/logo.svg'
 
 export default function NavBar() {
-    const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
+  const navigate = useNavigate();
 
+  const handleLogoClick = () => {
+    navigate(`/`, { replace: true })
+  }
   const handleConnectClick = async () => {
     try {
       await window.ethereum.request({
@@ -64,15 +68,16 @@ export default function NavBar() {
           <IconButton
             onClick={onToggle}
             icon={
-            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-          }
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
             variant={'ghost'}
             aria-label={'Toggle Navigation'}
-            />
+          />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Logo width={150}/>
-
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} >
+          <Box cursor={"pointer"} onClick={handleLogoClick}>
+            <Logo width={150} />
+          </Box>
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav />
           </Flex>
@@ -166,7 +171,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text
-transition={'all .3s ease'}
+            transition={'all .3s ease'}
             _groupHover={{ color: 'pink.400' }}
             fontWeight={500}>
             {label}
@@ -228,7 +233,7 @@ const MobileNavItem = ({ label, children, href }) => {
             transform={isOpen ? 'rotate(180deg)' : ''}
             w={6}
             h={6}
-            />
+          />
         )}
       </Flex>
 

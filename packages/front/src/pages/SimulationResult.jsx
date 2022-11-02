@@ -1,178 +1,67 @@
 import {
     Box,
-    Button,
     Flex,
     Grid,
     SimpleGrid,
-    Stat,
-    StatLabel,
-    Table,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    Link,
-    useColorModeValue,
-    Badge,
-    Stack,
-    TableContainer,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    GridItem,
-    InputGroup,
-    InputLeftElement,
-    Input,
-    Code,
-    Skeleton
 } from "@chakra-ui/react";
 
-import Web3 from "web3";
-
-import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { getContract } from "../services/contract";
-import { simulate } from "../services/simulation";
-
-import {
-    WalletIcon,
-} from "../components/Icons";
 
 import Card from "../components/Card";
-import IconBox from "../components/IconBox";
 import LineChart from "../components/LineChart";
+import { useEffect, useState } from "react";
+import { InfoCard } from "../components/InfoCard";
+import { SimulationCard } from "../components/SimulationCard";
 
 import '../css/SimulationResult.css';
-import { useEffect, useState } from "react";
-
 
 const SimulationResult = () => {
-    let formResult = {}
+    const contractAddr = window.location.href.split("/").pop();
 
     const [contractData, setContractData] = useState({
+        contractAddr: undefined,
+        contractCreator: undefined,
+        creationTimestamp: undefined,
+        oldestTimeStamp: undefined,
+        newestTimeStamp: undefined,
         addressCallCount: [],
         timePlot: [],
+        transactionOverTime: [],
+        valueOverTime: [],
     });
 
-    const [simulationData, setSimulationData] = useState({
+    const [simulationResult, setSimulationResult] = useState({
         loaded: false,
+        balance_diff: {
+            address: undefined,
+            original: undefined,
+            dirty: undefined,
+            is_miner: undefined,
+        },
         standards: [],
-        token_data: {},
-        balance_diff: { original: "-1", dirty: "-1" },
-        error: {}
+        token_data: {
+            name: undefined,
+            symbol: undefined,
+            decimals: undefined,
+        },
+        error: {
+            message: undefined,
+        },
     });
 
     useEffect(() => {
-        getContract("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2").then((data) => {
-            console.log(data.data)
+        getContract(contractAddr).then((data) => {
             setContractData(data.data);
+            console.log(data.data);
         });
     }, []);
 
-    const callSimulationService = function () {
-        formResult["to"] = contractData.bacalhau.contractAdress;
-        simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-            console.log(data.data)
-            data.data.simulation["loaded"] = true;
-            setSimulationData(data.data.simulation);
-        });
-    }
-
-    const iconBoxInside = useColorModeValue("white", "white");
-
     return <Flex paddingTop={"2rem"} flexDirection='column' backgroundColor={'gray.50'} >
         <SimpleGrid padding={{ base: "0 0.5rem", md: "0 2rem" }} className="simulationDataGrid" columns={{ sm: 1, md: 1, xl: 3 }} mb='20px' gap='20px'>
-            <Card>
-                <Flex
-                    flexDirection='row'
-                    align='center'
-                    justify='center'>
-                    <Stat me='auto'>
-                        <StatLabel
-                            fontSize='xs'
-                            color='gray.400'
-                            fontWeight='bold'
-                            textTransform='uppercase'>
-                            Creator address
-                        </StatLabel>
-                        <Link display={contractData.dataTx ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500' href={`https://etherscan.io/address/${contractData.dataTx ? contractData.dataTx.contractCreator : ""}`}>
-                            {contractData.dataTx ? contractData.dataTx.contractCreator : ""}
-                        </Link>
-                        <Skeleton display={contractData.dataTx ? "none" : "block"} height='20px' width={"95%"} />
-
-                    </Stat>
-                    <IconBox
-                        borderRadius='1rem'
-                        as='box'
-                        h={"45px"}
-                        w={"45px"}
-                        padding={"0.5rem"}
-                        bg={'orange'}>
-                        <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-                    </IconBox>
-                </Flex>
-            </Card>
-            <Card>
-                <Flex
-                    flexDirection='row'
-                    align='center'
-                    justify='center'>
-                    <Stat me='auto'>
-                        <StatLabel
-                            fontSize='xs'
-                            color='gray.400'
-                            fontWeight='bold'
-                            textTransform='uppercase'>
-                            Creation date
-                        </StatLabel>
-                        <Text display={contractData.dataTx ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500'>
-                            {contractData.dataTx ? new Date(contractData.dataTx.creationTimestamp).toLocaleDateString() : ""}
-                        </Text>
-                        <Skeleton display={contractData.dataTx ? "none" : "block"} height='20px' width={"95%"} />
-                    </Stat>
-                    <IconBox
-                        borderRadius='1rem'
-                        as='box'
-                        h={"45px"}
-                        w={"45px"}
-                        padding={"0.5rem"}
-                        bg={'orange'}>
-                        <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-                    </IconBox>
-                </Flex>
-            </Card>
-            <Card>
-                <Flex
-                    flexDirection='row'
-                    align='center'
-                    justify='center'>
-                    <Stat me='auto'>
-                        <StatLabel
-                            fontSize='xs'
-                            color='gray.400'
-                            fontWeight='bold'
-                            textTransform='uppercase'>
-                            {`Total calls after ${contractData.dataTx ? new Date(contractData.bacalhau.oldestTimeStamp).toLocaleDateString() : ""}`}
-                        </StatLabel>
-                        <Text display={contractData.bacalhau ? "block" : "none"} fontSize='sm' fontWeight='bold' color='orange.500' href='https://etherscan.io/address/0x0D4F8Ecb3140eda5cbDb32459720189e739E5B1B'>
-                            {Object.values(contractData.bacalhau ? contractData.bacalhau.addressCallCount : []).reduce((partialSum, a) => partialSum + a, 0)}
-                        </Text>
-                        <Skeleton display={contractData.bacalhau ? "none" : "block"} height='20px' width={"95%"} />
-                    </Stat>
-                    <IconBox
-                        borderRadius='1rem'
-                        as='box'
-                        h={"45px"}
-                        w={"45px"}
-                        padding={"0.5rem"}
-                        bg={'orange'}>
-                        <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-                    </IconBox>
-                </Flex>
-            </Card>
+            <InfoCard icon={"at"} label={"Creator address"} value={contractData.contractCreator} url={`https://etherscan.io/address/${contractData.contractCreator}`} />
+            <InfoCard icon={"time"} label={"Creation date"} value={contractData.creationTimestamp ? new Date(contractData.creationTimestamp).toLocaleDateString() : undefined} />
+            <InfoCard icon={"drag"} label={`Total calls after ${contractData.oldestTimeStamp ? new Date(contractData.oldestTimeStamp).toLocaleDateString() : undefined}`} value={Object.values(contractData.addressCallCount).reduce((partialSum, a) => partialSum + a, 0)} />
         </SimpleGrid>
         <Grid
             padding={{ base: "0 0.5rem", md: "0 2rem" }}
@@ -180,6 +69,7 @@ const SimulationResult = () => {
             templateRows={{ lg: "repeat(2, auto)" }}
             gap='20px'
             margin={"0 0 3rem 0"}>
+            {/* Chart */}
             <Card borderRadius='1rem'
                 bg={"white"}
                 p='0px'
@@ -190,7 +80,7 @@ const SimulationResult = () => {
                     </Text>
                     <Text color='#6492aa' fontSize='sm'>
                         <Text as='span' color='orange.400' fontWeight='bold'>
-                            {Object.keys(contractData.bacalhau ? contractData.bacalhau.addressCallCount : []).length}{" "}
+                            {Object.keys(contractData.addressCallCount).length}{" "}
                         </Text>
                         unique users
                     </Text>
@@ -200,7 +90,7 @@ const SimulationResult = () => {
                         chartData={[
                             {
                                 name: "Calls to contract",
-                                data: contractData.bacalhau ? contractData.bacalhau.transactionOverTime : [],
+                                data: contractData.transactionOverTime,
                             }
                         ]}
                         chartOptions={{
@@ -220,9 +110,9 @@ const SimulationResult = () => {
                             },
                             xaxis: {
                                 type: "string",
-                                categories: contractData.bacalhau ? contractData.bacalhau.timePlot.map(function (ts) {
+                                categories: contractData.timePlot.map(function (ts) {
                                     return new Date(ts).toLocaleDateString();
-                                }) : [],
+                                }),
                                 axisTicks: {
                                     show: false
                                 },
@@ -267,129 +157,8 @@ const SimulationResult = () => {
                         }} />
                 </Box>
             </Card>
-            <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
-                <Flex display={simulationData.loaded && !simulationData.error.message ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
-                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-                        SIMULATION RESULT
-                    </Text>
-                    <Stack direction='row'>
-                        {
-                            simulationData.standards ? simulationData.standards.map((standard, index) => {
-                                return <Badge key={index} colorScheme='orange'>{standard}</Badge>
-                            }) : ""
-                        }
-                    </Stack>
-                    <Accordion margin={"0.5rem 0"} defaultIndex={[0, 1]} allowMultiple>
-                        <AccordionItem display={simulationData.token_data !== {} ? "block" : "none"}>
-                            <h2>
-                                <AccordionButton>
-                                    <Box flex='1' textAlign='left'>
-                                        Token data
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <TableContainer>
-                                    <Table variant='simple'>
-                                        <Thead>
-                                            <Tr>
-                                                <Th>Name</Th>
-                                                <Th>Symbol</Th>
-                                                <Th isNumeric>Decimals</Th>
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                            <Tr>
-                                                <Td>{simulationData.token_data ? simulationData.token_data.name : ""}</Td>
-                                                <Td>{simulationData.token_data ? simulationData.token_data.symbol : ""}</Td>
-                                                <Td isNumeric>{simulationData.token_data ? simulationData.token_data.decimals : ""}</Td>
-                                            </Tr>
-                                        </Tbody>
-                                    </Table>
-                                </TableContainer>
-                            </AccordionPanel>
-                        </AccordionItem>
-
-                        <AccordionItem display={simulationData.balance_diff !== { original: "-1", dirty: "-1" } ? "block" : "none"}>
-                            <h2>
-                                <AccordionButton>
-                                    <Box flex='1' textAlign='left'>
-                                        Balance diff
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <Grid templateColumns='repeat(20, 1fr)' gap={"0.2rem"}>
-                                    <GridItem colSpan={"9"} w='100%' h='10'>
-                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='red'>{
-                                            simulationData.balance_diff ? Web3.utils.fromWei(simulationData.balance_diff.original, 'ether').match("[0-9]*.[0-9]{3}") : ""
-                                        } ETH</Badge>
-                                    </GridItem>
-                                    <GridItem colSpan={"2"} w='100%' h='10'>
-                                        <ArrowForwardIcon color={"gray.400"} height={"100%"} width={"100%"} />
-                                    </GridItem>
-                                    <GridItem colSpan={"9"} w='100%' h='10'>
-                                        <Badge textAlign={"center"} width={"100%"} padding={"0.5rem"} fontSize={"lg"} colorScheme='green'>{
-                                            simulationData.balance_diff ? Web3.utils.fromWei(simulationData.balance_diff.dirty, 'ether').match("[0-9]*.[0-9]{3}") : ""
-                                        } ETH</Badge>
-                                    </GridItem>
-                                </Grid>
-                            </AccordionPanel>
-                        </AccordionItem>
-                    </Accordion>
-                </Flex>
-                <Flex display={simulationData.loaded && simulationData.error.message ? "block" : "none"} direction='column' mb='40px' p='1rem 1.5rem'>
-                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-                        SIMULATION ERROR
-                    </Text>
-                    <Code colorScheme='red' children={simulationData.error.message ? simulationData.error.message : ""} />
-                </Flex>
-                <Flex display={simulationData.loaded ? "none" : "block"} className="formContainer" direction='column' mb='40px' p='1rem 1.5rem'>
-                    <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-                        SIMULATION
-                    </Text>
-                    <InputGroup margin={"0.5rem 0"}>
-                        <InputLeftElement
-                            pointerEvents='none'
-                            color='gray.300'
-                            fontSize='1.2em'>
-                            <Text fontSize='md'>To :</Text>
-                        </InputLeftElement>
-                        <Input placeholder='Contract address' isDisabled isReadOnly value={contractData.bacalhau ? contractData.bacalhau.contractAdress : ""} bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    </InputGroup>
-                    <Input onInput={
-                        (e) => {
-                            formResult["from"] = e.target.value;
-                        }
-                    } margin={"0.5rem 0"} placeholder='From' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input onInput={
-                        (e) => {
-                            formResult["data"] = e.target.value;
-                        }
-                    } margin={"0.5rem 0"} placeholder='Input data' bg={'gray.100'} focusBorderColor={'orange.200'} />
-                    <Input onInput={
-                        (e) => {
-                            formResult["value"] = Web3.utils.toWei(e.target.value, 'ether');
-                        }
-                    } margin={"0.5rem 0"} placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
-
-                    <Link to='/simulationResult'>
-                        <Button onClick={callSimulationService} leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
-                            mt={8}
-                            w={'full'}
-                            bgGradient="linear(to-r, red.400,orange.400)"
-                            color={'white'}
-                            _hover={{
-                                bgGradient: 'linear(to-r, red.400,orange.400)',
-                                boxShadow: 'xl',
-                            }}>
-                            Submit
-                        </Button>
-                    </Link>
-                </Flex>
-            </Card>
+            {/* Simulation */}
+            <SimulationCard simulation={simulationResult} contractData={contractData} setSimulationResult={setSimulationResult}></SimulationCard>
         </Grid>
     </Flex >
 }

@@ -1,51 +1,55 @@
-
-body
-{
-  background-color:#141019 !important;
+body {
+  background-color: #141019 !important;
   background: radial-gradient(at 50% -20%, #908392, #0d060e) fixed !important;
 }
 
 
-#handboy
-{
-   animation: swing ease-in-out 1.3s infinite alternate !important;
-    transform-origin: 98% 98% !important;
-    transform-box: fill-box !important;
-    
+#handboy {
+  animation: swing ease-in-out 1.3s infinite alternate !important;
+  transform-origin: 98% 98% !important;
+  transform-box: fill-box !important;
+
 }
 
 
-#girllight
-{
-   animation: swing ease-in-out 1.3s infinite alternate !important;
-    transform-origin: 0% 97% !important;
-    transform-box: fill-box !important;
+#girllight {
+  animation: swing ease-in-out 1.3s infinite alternate !important;
+  transform-origin: 0% 97% !important;
+  transform-box: fill-box !important;
 }
 
-#hairgirl
-{
-    animation: swinghair ease-in-out 1.3s infinite alternate !important;
-   transform-origin: 60% 0% !important;
-    transform-box: fill-box !important;
-  
+#hairgirl {
+  animation: swinghair ease-in-out 1.3s infinite alternate !important;
+  transform-origin: 60% 0% !important;
+  transform-box: fill-box !important;
+
 }
 
-#zero
-{
-  transform-origin:bottom !important;
-  transform-box:fill-box !important;
-  
+#zero {
+  transform-origin: bottom !important;
+  transform-box: fill-box !important;
+
 }
 
 /*************swing************/
 @keyframes swing {
-    0% { transform: rotate(10deg); }
-    100% { transform: rotate(-10deg); }
+  0% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-10deg);
+  }
 }
 
 
 /*************swing hair************/
 @keyframes swinghair {
-    0% { transform: rotate(6deg); }
-    100% { transform: rotate(-6deg); }
+  0% {
+    transform: rotate(6deg);
+  }
+
+  100% {
+    transform: rotate(-6deg);
+  }
 }

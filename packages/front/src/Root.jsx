@@ -1,11 +1,10 @@
 import NavBar from './components/NavBar';
 import SimulationResult from './pages/SimulationResult';
-import Contracts from './pages/Contracts';
+import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react'
-
-import './css/Root.css'
 
 const Root = () => {
   return (
@@ -13,7 +12,7 @@ const Root = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<NavBar />}>
-            <Route index element={<Contracts />} />
+            <Route index element={<Home />} />
             <Route path='contract/:address' element={<SimulationResult />} />
             <Route path='SimulationResult' element={<SimulationResult />} />
             <Route path='*' element={<NotFound />} />
@@ -21,7 +20,7 @@ const Root = () => {
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
-   );
+  );
 };
 
 export default Root;
