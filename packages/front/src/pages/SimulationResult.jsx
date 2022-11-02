@@ -12,7 +12,7 @@ import Card from "../components/Card";
 import LineChart from "../components/LineChart";
 import { useEffect, useState } from "react";
 import { InfoCard } from "../components/InfoCard";
-import { SimulationCard } from "../components/SimulationCard";
+import { SimulationForm } from "../components/SimulationForm";
 
 import '../css/SimulationResult.css';
 
@@ -158,7 +158,7 @@ const SimulationResult = () => {
                 </Box>
             </Card>
             {/* Simulation */}
-            <SimulationCard simulation={simulationResult} contractData={contractData} setSimulationResult={setSimulationResult}></SimulationCard>
+            <SimulationForm simulation={simulationResult} contractData={contractData} setSimulationResult={setSimulationResult}></SimulationForm>
         </Grid>
     </Flex >
 }

@@ -32,82 +32,85 @@ export default function Home() {
   }
 
   return (
-    <Box position={'relative'}>
-      <Container
-        as={SimpleGrid}
-        maxW={'7xl'}
-        columns={{ base: 1, md: 2, sm: 1 }}
-        spacing={{ base: 10, lg: 32 }}
-        py={{ base: 10, sm: 20, lg: 32 }}>
-        <Stack spacing={{ base: 10, md: 20 }} justifyContent={"center"} pl={{ base: 20 }}>
-          <Heading
-            lineHeight={1.1}
-            fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            SafeCheck
-          </Heading>
-        </Stack>
-        <Stack
-          bg={'gray.50'}
-          rounded={'xl'}
-          p={{ base: 4, sm: 6, md: 8 }}
-          spacing={{ base: 8 }}
-          maxW={{ lg: 'lg' }}>
-          <Stack spacing={4}>
+    <Box h={"100vh"}>
+      <Box position={'relative'}>
+        <Container
+          as={SimpleGrid}
+          maxW={'7xl'}
+          columns={{ base: 1, md: 2, sm: 1 }}
+          spacing={{ base: 10, lg: 32 }}
+          py={{ base: 10, sm: 20, lg: 32 }}>
+          <Stack spacing={{ base: 10, md: 20 }} justifyContent={"center"} pl={{ base: 20 }}>
             <Heading
-              color={'gray.800'}
               lineHeight={1.1}
-              fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-              <Center>
-                Search a contract
-              </Center>
+              fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
+              SafeCheck
             </Heading>
           </Stack>
-          <Box as={'form'} mt={10}>
+          <Stack
+            bg={'gray.50'}
+            rounded={'xl'}
+            p={{ base: 4, sm: 6, md: 8 }}
+            spacing={{ base: 8 }}
+            maxW={{ lg: 'lg' }}>
             <Stack spacing={4}>
-              <Input
-                onChange={handleContractChange}
-                value={contract}
-                placeholder="0x..."
-                size="lg"
-                bg={'gray.100'}
-                border={0}
-                color={'gray.700'}
-                focusBorderColor={'orange.300'}
-                _placeholder={{
-                  color: 'gray.500',
-                }}
-              />
-              <Button
-                isDisabled={!isValid}
-                onClick={handleContractSubmit}
-                fontFamily={'heading'}
-                mt={8}
-                w={'full'}
-                bgGradient='linear(to-r, red.400,orange.400)'
-                color={'white'}
-                _active={{
-                  bg: 'orange.400',
-                  borderColor: 'red.400',
-                }}
-                _hover={{
-                  bgGradient: 'linear(to-r, red.300,orange.300)',
-                  boxShadow: 'xl',
-                }}>
-                Inspect
-              </Button>
+              <Heading
+                color={'gray.800'}
+                lineHeight={1.1}
+                fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
+                <Center>
+                  Search a contract
+                </Center>
+              </Heading>
             </Stack>
-          </Box>
-          form
-        </Stack>
-      </Container>
-      <Blur
-        position={'absolute'}
-        top={0}
-        zIndex={-1}
-        left={-10}
-        style={{ filter: 'blur(100px)' }}
-      />
+            <Box as={'form'} mt={10}>
+              <Stack spacing={4}>
+                <Input
+                  onChange={handleContractChange}
+                  value={contract}
+                  placeholder="0x..."
+                  size="lg"
+                  bg={'gray.100'}
+                  border={0}
+                  color={'gray.700'}
+                  focusBorderColor={'orange.300'}
+                  _placeholder={{
+                    color: 'gray.500',
+                  }}
+                />
+                <Button
+                  isDisabled={!isValid}
+                  onClick={handleContractSubmit}
+                  fontFamily={'heading'}
+                  mt={8}
+                  w={'full'}
+                  bgGradient='linear(to-r, red.400,orange.400)'
+                  color={'white'}
+                  _active={{
+                    bg: 'orange.400',
+                    borderColor: 'red.400',
+                  }}
+                  _hover={{
+                    bgGradient: 'linear(to-r, red.300,orange.300)',
+                    boxShadow: 'xl',
+                  }}>
+                  Inspect
+                </Button>
+              </Stack>
+            </Box>
+            form
+          </Stack>
+        </Container>
+        <Blur
+          position={'absolute'}
+          top={0}
+          zIndex={-1}
+          left={-10}
+          style={{ filter: 'blur(100px)' }}
+        />
+      </Box>
     </Box>
+
   )
 };
 

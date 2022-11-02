@@ -14,7 +14,6 @@ const Root = () => {
           <Route path='/' element={<NavBar />}>
             <Route index element={<Home />} />
             <Route path='contract/:address' element={<SimulationResult />} />
-            <Route path='SimulationResult' element={<SimulationResult />} />
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>

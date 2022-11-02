@@ -23,29 +23,47 @@ import {
     Input,
     Link,
     Button,
-    InputLeftElement
+    InputLeftElement,
+    Alert,
+    AlertIcon,
+    AlertTitle,
 } from "@chakra-ui/react"
 import {
     ArrowForwardIcon,
     ArrowRightIcon,
 } from "@chakra-ui/icons"
 
-import Card from "../components/Card"
+import Card from "./Card"
 
 import Web3 from "web3"
+import { useState } from "react"
 import { valueToDisplay } from "../utils/utils"
 import { simulate } from "../services/simulation"
 
-export const SimulationCard = (props) => {
+export const SimulationForm = (props) => {
     let formResult = {}
+    const [display, setDisplay] = useState("none")
+    let alertBox = <Alert status='error' borderRadius={"0.5rem"} display={display}>
+        <AlertIcon />
+        <AlertTitle>Invalid input</AlertTitle>
+    </Alert>
+
 
     const callSimulationService = function (contractData) {
         formResult["to"] = contractData.contractAdress;
-        simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
-            data.data["loaded"] = true;
-            props.setSimulationResult(data.data);
-            console.log(data.data)
-        });
+        if (formResult.from && formResult.from.match("^0x[a-fA-F0-9]{40}$") != null) {
+            simulate(formResult.from, formResult.to, formResult.data, formResult.value).then((data) => {
+                data.data["loaded"] = true;
+                props.setSimulationResult(data.data);
+                console.log(data.data)
+            });
+        }
+        else {
+            setDisplay("inline-flex")
+            setTimeout(() => {
+                setDisplay("none")
+            }, 1000)
+        }
     }
 
     return <Card p='0px' maxW={{ md: "100%" }} backgroundColor='white' borderRadius="1rem">
@@ -158,7 +176,9 @@ export const SimulationCard = (props) => {
                     formResult["value"] = Web3.utils.toWei(e.target.value, 'ether');
                 }
             } margin={"0.5rem 0"} placeholder='Value' bg={'gray.100'} focusBorderColor={'orange.200'} />
-
+            {
+                alertBox
+            }
             <Link to='/simulationResult'>
                 <Button onClick={callSimulationService} leftIcon={<ArrowRightIcon />} fontFamily={'heading'}
                     mt={8}
